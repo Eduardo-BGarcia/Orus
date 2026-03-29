@@ -1,0 +1,92 @@
+{% extends "nutri/modelo.html" %}
+
+{% load static %}
+
+{% block hero %}
+<section class="hero-botanical position-relative d-flex align-items-center"
+         style="background-image: url('{% static 'imgs/index_hero.jpg' %}');">
+  
+  <div class="position-absolute top-0 start-0 w-100 h-100"
+       style="background: linear-gradient(to right, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.1) 100%); z-index: -1;">
+  </div>
+  
+  <div class="container position-relative z-1">
+    <div class="row">
+      <div class="col-lg-8 col-xl-7 text-start ps-lg-4 pe-lg-5">
+        
+        <h1 class="display-3 fw-bold mb-3" style="color: var(--theme-neutral); font-family: var(--font-display);">
+          Nutrição como <span style="font-style: italic; color: var(--theme-primary);">Arte.</span>
+        </h1>
+        
+        <p class="mb-4 text-muted" style="font-size: 1.1rem; max-width: 480px;">
+          Acompanhe sua jornada nutricional com o rigor de um especialista e a leveza de um entusiasta.
+        </p>
+
+        <form class="position-relative mt-5 shadow-lg rounded-pill border" style="max-width: 550px; background: white; padding: 6px;">
+          <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-4 text-muted fs-5"></i>
+          
+          <input type="text" class="form-control form-control-lg border-0 shadow-none ps-5"
+                 placeholder="O que você quer consultar hoje?"
+                 style="border-radius: 50px; font-size: 1.05rem; background: transparent;">
+          
+          <button type="submit" class="btn rounded-pill position-absolute top-50 end-0 translate-middle-y me-2 px-4 fw-bold"
+                  style="background-color: var(--theme-primary); color: white;">
+            Buscar
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock hero %}
+
+{% block conteudo %}
+
+<!-- Seção rápida de recursos -->
+<section class="py-5 bg-surface-alt">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="fw-display mb-2">Recursos Principais</h2>
+      <p class="text-secondary">Ferramentas essenciais para organizar campeonatos e inscrever jogadores e equipes.</p>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card-petrol p-4 h-100 text-center">
+          <div class="feature-icon bg-primary bg-opacity-10 mx-auto mb-3"><i class="bi bi-calendar-check fs-4 text-primary"></i></div>
+          <h5 class="fw-display mb-2">Criar Torneios</h5>
+          <p class="text-secondary mb-0">Defina modalidades, regras e chaves de disputa.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-petrol p-4 h-100 text-center">
+          <div class="feature-icon bg-success bg-opacity-10 mx-auto mb-3"><i class="bi bi-people-fill fs-4 text-success"></i></div>
+          <h5 class="fw-display mb-2">Inscrição de Equipes</h5>
+          <p class="text-secondary mb-0">Jogadores inscrevem suas equipes em modalidades distintas.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-petrol p-4 h-100 text-center">
+          <div class="feature-icon bg-info bg-opacity-10 mx-auto mb-3"><i class="bi bi-bar-chart-line fs-4 text-info"></i></div>
+          <h5 class="fw-display mb-2">Resultados & Rankings</h5>
+          <p class="text-secondary mb-0">Acompanhe placares, tabelas e evolução dos jogadores.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA simples -->
+<section class="py-5 bg-petrol">
+  <div class="container text-center">
+    <h3 class="fw-display text-white mb-2">Pronto para competir?</h3>
+    <p class="text-white-75 mb-3" style="max-width:600px; margin:0 auto">Crie ou participe de campeonatos organizados pelo IFPR e faça parte da comunidade.</p>
+    <div class="d-flex justify-content-center gap-3">
+      <a href="{% url "contato" %}" class="btn btn-light px-4 rounded-2 fw-semibold"><i class="bi bi-envelope me-1"></i>Entrar em contato</a>
+      <a href="{% url "sobre" %}" class="btn btn-auth px-4 rounded-2"><i class="bi bi-info-circle me-1"></i>Saiba mais</a>
+    </div>
+  </div>
+</section>
+
+{% endblock conteudo %}

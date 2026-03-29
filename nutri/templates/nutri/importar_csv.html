@@ -1,0 +1,32 @@
+{% extends "nutri/modelo.html" %}
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Importar Tabela Nutricional</title>
+</head>
+<body>
+    <h1>Importar Dados Nutricionais (CSV)</h1>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} 
+        
+        <label for="arquivo_csv">Selecione o arquivo .csv:</label><br><br>
+        <input type="file" name="arquivo_csv" id="arquivo_csv" accept=".csv" required><br><br>
+        
+        <button type="submit">Importar Dados</button>
+    </form>
+
+    {% if mensagens %}
+        <ul>
+            {% for mensagem in mensagens %}
+                <li>{{ mensagem }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

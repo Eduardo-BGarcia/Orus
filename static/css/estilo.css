@@ -1,0 +1,376 @@
+:root {
+    /* Paleta Vitality Core Desejada (Figma) */
+    --theme-primary:   #2D6A4F; /* Verde escuro principal */
+    --theme-secondary: #40916C; /* Verde médio */
+    --theme-tertiary:  #8D4D4E; /* Tom terroso/avermelhado */
+    --theme-neutral:   #1B1B1B; /* Quase preto para textos fortes */
+    
+    /* Configuração de Cores Claras para a Interface */
+    --surface:         #E5E2E1; /* Fundo principal branco */
+    --surface-alt:     #f4f6f7; /* Fundo alternativo/cards cinza muito claro */
+    --border-color:    #e2e8f0; /* Cor de bordas suave */
+    --text-body:       #4a5568; /* Cor do texto principal */
+    --text-muted:      #a0aec0; /* Cor do texto "apagado" */
+    
+    /* Variáveis do Template do Professor - Mapeando para o Novo Design */
+    /* Isso garante que os componentes antigos (botões, alertas) usem a nova paleta verde */
+    --cp-primary:      var(--theme-primary);
+    --cp-success:      #2D9E6B; 
+    --cp-info:         #3A7FC1; 
+    --cp-warning:      #D4840A; 
+    --cp-danger:       var(--theme-tertiary);
+    --cp-secondary:    var(--theme-secondary);
+
+    /* Forçando o template original a usar fundos claros em vez de escuros */
+    --petrol:          var(--theme-primary);
+    --petrol-dark:     #22503B;
+    --petrol-darker:   var(--surface); /* Fundo da navbar agora é branco! */
+    --petrol-subtle:   #E6F4EA;
+    --petrol-muted:    var(--border-color);
+
+    /* Tipografia e Sombras (Mantidos) */
+    --font-display:    'Syne', sans-serif;
+    --font-body:       'DM Sans', sans-serif;
+    --shadow-sm:  0 2px 4px rgba(45, 106, 79, 0.05);
+    --shadow-md:  0 4px 12px rgba(45, 106, 79, 0.08);
+    --shadow-lg:  0 10px 24px rgba(45, 106, 79, 0.12);
+}
+
+/* Modificação extra na Navbar para ela ficar branca e transparente como no print */
+.navbar-petrol {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: none !important;
+}
+.navbar-petrol .navbar-brand { color: var(--theme-primary) !important; }
+.navbar-petrol .nav-link { color: var(--theme-neutral) !important; text-transform: uppercase; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;}
+.navbar-petrol .nav-link:hover { color: var(--theme-primary) !important; background: transparent; }
+
+/* ─── Reset / Base ─── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--surface);
+  color: var(--text-body);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+h1,h2,h3,h4,h5,h6,.display-1,.display-2,.display-3,.display-4,.display-5,.display-6 {
+  font-family: var(--font-display);
+  letter-spacing: -.02em;
+  padding: inherit;
+}
+
+/* ─── OVERRIDE BOOTSTRAP TOKENS ─── */
+
+/* Primary */
+.btn-primary, .bg-primary, .badge.bg-primary { background-color: var(--cp-primary) !important; border-color: var(--cp-primary) !important; }
+.btn-primary:hover                            { background-color: var(--petrol-dark) !important; border-color: var(--petrol-dark) !important; }
+.btn-outline-primary                          { color: var(--cp-primary) !important; border-color: var(--cp-primary) !important; }
+.btn-outline-primary:hover                    { background-color: var(--cp-primary) !important; color: #fff !important; }
+.text-primary, a.link-primary                 { color: var(--cp-primary) !important; }
+.border-primary                               { border-color: var(--cp-primary) !important; }
+.alert-primary                                { background-color: var(--petrol-subtle) !important; border-color: var(--petrol-muted) !important; color: var(--petrol-darker) !important; }
+
+/* Success */
+.btn-success, .bg-success, .badge.bg-success  { background-color: var(--cp-success) !important; border-color: var(--cp-success) !important; }
+.btn-success:hover                             { background-color: #22805a !important; border-color: #22805a !important; }
+.btn-outline-success                           { color: var(--cp-success) !important; border-color: var(--cp-success) !important; }
+.btn-outline-success:hover                     { background-color: var(--cp-success) !important; color: #fff !important; }
+.text-success                                  { color: var(--cp-success) !important; }
+.border-success                                { border-color: var(--cp-success) !important; }
+.alert-success                                 { background-color: #e5f6ef !important; border-color: #a7dfc6 !important; color: #1a5e40 !important; }
+
+/* Info */
+.btn-info, .bg-info, .badge.bg-info            { background-color: var(--cp-info) !important; border-color: var(--cp-info) !important; color: #fff !important; }
+.btn-info:hover                                { background-color: #2d66a1 !important; border-color: #2d66a1 !important; }
+.btn-outline-info                              { color: var(--cp-info) !important; border-color: var(--cp-info) !important; }
+.btn-outline-info:hover                        { background-color: var(--cp-info) !important; color: #fff !important; }
+.text-info                                     { color: var(--cp-info) !important; }
+.border-info                                   { border-color: var(--cp-info) !important; }
+.alert-info                                    { background-color: #e8f1fb !important; border-color: #a8c9ef !important; color: #1c3f6e !important; }
+
+/* Warning */
+.btn-warning, .bg-warning, .badge.bg-warning   { background-color: var(--cp-warning) !important; border-color: var(--cp-warning) !important; color: #fff !important; }
+.btn-warning:hover                             { background-color: #b36d08 !important; border-color: #b36d08 !important; }
+.btn-outline-warning                           { color: var(--cp-warning) !important; border-color: var(--cp-warning) !important; }
+.btn-outline-warning:hover                     { background-color: var(--cp-warning) !important; color: #fff !important; }
+.text-warning                                  { color: var(--cp-warning) !important; }
+.border-warning                                { border-color: var(--cp-warning) !important; }
+.alert-warning                                 { background-color: #fdf3e3 !important; border-color: #f0c97a !important; color: #6b3e04 !important; }
+
+/* Danger */
+.btn-danger, .bg-danger, .badge.bg-danger      { background-color: var(--cp-danger) !important; border-color: var(--cp-danger) !important; }
+.btn-danger:hover                              { background-color: #9e2a3a !important; border-color: #9e2a3a !important; }
+.btn-outline-danger                            { color: var(--cp-danger) !important; border-color: var(--cp-danger) !important; }
+.btn-outline-danger:hover                      { background-color: var(--cp-danger) !important; color: #fff !important; }
+.text-danger                                   { color: var(--cp-danger) !important; }
+.border-danger                                 { border-color: var(--cp-danger) !important; }
+.alert-danger                                  { background-color: #fceaec !important; border-color: #e8a0aa !important; color: #5e141e !important; }
+
+/* Secondary */
+.btn-secondary, .bg-secondary, .badge.bg-secondary { background-color: var(--cp-secondary) !important; border-color: var(--cp-secondary) !important; margin-top: auto;}
+.btn-secondary:hover                               { background-color: #48636a !important; border-color: #48636a !important; }
+.text-secondary, .text-muted                       { color: var(--text-muted) !important; }
+
+/* Links */
+a { color: var(--cp-primary); text-decoration: none; transition: color .18s; }
+a:hover { color: var(--petrol-light); }
+
+/* ─── NAVBAR ─── */
+.navbar-petrol {
+  background-color: var(--petrol-darker);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  box-shadow: var(--shadow-md);
+}
+
+.navbar-petrol .navbar-brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #fff;
+  letter-spacing: -.03em;
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+
+.navbar-petrol .navbar-brand .brand-dot {
+  width: 8px; height: 8px;
+  background: var(--petrol-lighter);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.navbar-petrol .nav-link {
+  color: rgba(255,255,255,.72) !important;
+  font-weight: 500;
+  font-size: .875rem;
+  padding: .45rem .75rem !important;
+  border-radius: .375rem;
+  transition: color .18s, background .18s;
+  letter-spacing: .01em;
+}
+
+.navbar-petrol .nav-link:hover,
+.navbar-petrol .nav-link:focus,
+.navbar-petrol .nav-link.active {
+  color: #fff !important;
+  background: rgba(255,255,255,.1);
+}
+
+.navbar-petrol .dropdown-menu {
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  border-radius: .75rem;
+  padding: .4rem;
+  background: #fff;
+  min-width: 200px;
+}
+
+.navbar-petrol .dropdown-item {
+  border-radius: .45rem;
+  padding: .5rem .85rem;
+  font-size: .875rem;
+  color: var(--text-body);
+  font-weight: 500;
+  transition: background .15s, color .15s;
+}
+
+.navbar-petrol .dropdown-item:hover {
+  background: var(--petrol-subtle);
+  color: var(--petrol-dark);
+}
+
+.navbar-petrol .dropdown-item i {
+  width: 18px;
+  opacity: .65;
+}
+
+.navbar-petrol .dropdown-divider {
+  border-color: var(--border-color);
+  margin: .3rem .5rem;
+}
+
+.navbar-petrol .dropdown-header {
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  padding: .45rem .85rem .2rem;
+}
+
+/* Navbar toggler */
+.navbar-petrol .navbar-toggler {
+  border-color: rgba(255,255,255,.3);
+  padding: .35rem .6rem;
+}
+.navbar-petrol .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Auth button */
+.btn-auth {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.22);
+  color: #fff !important;
+  font-weight: 600;
+  font-size: .8rem;
+  padding: .42rem 1rem;
+  border-radius: .5rem;
+  transition: background .18s, border-color .18s;
+  letter-spacing: .02em;
+}
+.btn-auth:hover {
+  background: rgba(255,255,255,.22);
+  border-color: rgba(255,255,255,.4);
+  color: #fff !important;
+}
+
+/* User avatar chip */
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 2rem;
+  padding: .3rem .75rem .3rem .35rem;
+  cursor: pointer;
+  transition: background .18s;
+}
+.user-chip:hover { background: rgba(255,255,255,.2); }
+.user-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--petrol-lighter);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .7rem; font-weight: 700; color: #fff;
+}
+.user-chip-name { font-size: .8rem; font-weight: 600; color: #fff; }
+
+/* ─── MAIN CONTENT ─── */
+main { flex: 1; }
+
+/* Hero */
+.hero {
+background: none !important;
+overflow: hidden;
+position: relative;
+}
+
+/* Escondemos as camadas antigas de ruído e gradiente */
+.hero::before, .hero-noise {
+display: none !important;
+background: none !important;
+}
+
+/* --- NOVA CLASSE: .HERO-BOTANICAL (O Design do Figma) --- */
+/* Esta classe gerencia a imagem de fundo e a altura responsiva */
+.hero-botanical {
+background-color: var(--surface);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover; /* Faz a imagem cobrir todo o espaço */
+position: relative;
+z-index: 1;
+}
+
+/* Cards */
+.card-petrol {
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .22s, transform .22s;
+}
+.card-petrol:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Feature icon */
+.feature-icon {
+  width: 48px; height: 48px;
+  border-radius: .75rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+}
+
+/* Section bg alt */
+.bg-surface { background-color: var(--surface) !important; }
+.bg-surface-alt { background-color: var(--surface-alt) !important; }
+.bg-petrol { background-color: var(--cp-primary) !important; }
+.bg-petrol-darker { background-color: var(--petrol-darker) !important; }
+.bg-petrol-subtle { background-color: var(--petrol-subtle) !important; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--petrol-darker);
+  color: rgba(255,255,255,.65);
+  font-size: .85rem;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+footer .footer-brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: #fff;
+  font-size: 1.1rem;
+  letter-spacing: -.03em;
+}
+footer a { color: rgba(255,255,255,.55); transition: color .18s; }
+footer a:hover { color: var(--petrol-lighter); }
+footer .footer-heading {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.35);
+  margin-bottom: .75rem;
+}
+footer hr { border-color: rgba(255,255,255,.08); }
+.footer-social a {
+  width: 34px; height: 34px;
+  border-radius: .5rem;
+  background: rgba(255,255,255,.07);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .18s, color .18s;
+}
+.footer-social a:hover { background: var(--petrol-light); color: #fff; }
+
+/* ─── UTILITIES ─── */
+.rounded-xl  { border-radius: 1rem !important; }
+.rounded-2xl { border-radius: 1.5rem !important; }
+.fw-display  { font-family: var(--font-display) !important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--surface-alt); }
+::-webkit-scrollbar-thumb { background: var(--petrol-muted); border-radius: 3px; }
+
+/* 1. Em telas grandes (como sua vertical), definimos uma altura mínima boa, */
+/* mas limitamos a altura máxima para não virar um buraco. */
+@media (min-width: 992px) { /* Lg screens and up */
+    .hero-botanical {
+        min-height: 65vh;   /* Ocupa 65% da altura no desktop normal */
+        max-height: 520px;  /* TETTO MÁXIMO DEFINIDO: Nunca passará disso! */
+    }
+}
+
+/* 2. Em telas pequenas (celulares) ou monitores muito na vertical (portrait), */
+/* removemos as unidades 'vh' e usamos padding fixo para controlar o tamanho. */
+@media (max-width: 991.98px), (orientation: portrait) { /* Phones/portables OR vertical monitors */
+    .hero-botanical {
+        min-height: auto !important; /* Remove a constraint 'vh' */
+        max-height: 480px;           /* Teto ainda menor para vertical/mobile */
+        padding-top: 140px !important; /* Espaço extra para o header */
+        padding-bottom: 80px !important;
+    }
+}
