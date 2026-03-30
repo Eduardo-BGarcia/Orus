@@ -72,7 +72,7 @@ def alimento(request):
         
     context = {
         'alimentos': None,
-        'query': None,
+        'query': query,
         'ordem_atual': None,
         'top_4_alimentos': top_4_alimentos
     }
@@ -89,29 +89,29 @@ def receita(request):
     ordem = request.GET.get('ordem', '')
 
     if query != '' or ordem != '':
-        alimentos = Alimento.objects.filter(receita=True)
+        receitas = Alimento.objects.filter(receita=True)
 
         if query:
-            alimentos = alimentos.filter(nome__icontains=query)
+            receitas = receitas.filter(nome__icontains=query)
 
         campos_validos = [f.name for f in Alimento._meta.get_fields()]
         campo_limpo = ordem.replace('-', '')
         
         if campo_limpo in campos_validos:
-            alimentos = alimentos.order_by(ordem)
+            receitas = receitas.order_by(ordem)
 
-        alimentos = alimentos[:30]
+        receitas = receitas[:30]
 
         campo_limpo = ordem.replace('-', '')
         if campo_limpo and campo_limpo in campos_validos:
-            for a in alimentos:
+            for a in receitas:
                 a.valor_destaque = getattr(a, campo_limpo)
                 a.label_destaque = campo_limpo.replace('_', ' ')
         
         top_4_receitas = Alimento.objects.filter(receita=True).order_by('-visualizacoes')[:4]
         
         context = {
-            'alimentos': alimentos,
+            'receitas': receitas,
             'query': query,
             'ordem_atual': ordem,
             'top_4_receitas': top_4_receitas
@@ -123,14 +123,12 @@ def receita(request):
         
     context = {
         'alimentos': None,
-        'query': None,
+        'query': query,
         'ordem_atual': None,
         'top_4_receitas': top_4_receitas
     }
     
     return render(request, 'nutri/receita.html', context)
-    
-    return render(request, 'nutri/receita.html')
 
 def receita_detalhe(request, id):
     item = get_object_or_404(Alimento, id=id)

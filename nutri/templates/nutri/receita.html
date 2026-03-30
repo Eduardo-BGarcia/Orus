@@ -58,13 +58,13 @@
             </div>
           </div>
           
-          <a href="{% url 'alimento_detalhe' item.id %}" class="btn btn-outline-secondary btn-sm rounded-pill w-100 fw-bold mt-auto">Ver Detalhes</a>
+          <a href="{% url 'receita_detalhe' item.id %}" class="btn btn-outline-secondary btn-sm rounded-pill w-100 fw-bold mt-auto">Ver Detalhes</a>
         </div>
       </div>
       
       {% empty %}
       <div class="col-12 text-center py-2">
-        <p class="text-muted">Nenhum alimento foi visualizado ainda. Seja o primeiro a buscar!</p>
+        <p class="text-muted">Nenhuma receita foi visualizada ainda. Seja o primeiro a buscar!</p>
       </div>
       {% endfor %}
     </div>
@@ -95,7 +95,7 @@
     </form>
 
     <div class="row g-4">
-        {% for item in alimentos %}
+        {% for item in receitas %}
         <div class="col-md-6 col-lg-4">
           <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center d-flex flex-column" style="background-color: var(--surface-alt);">
             
@@ -150,7 +150,7 @@
               </div>
               </div>
             
-            <a href="{% url 'alimento_detalhe' item.id %}" class="btn btn-outline-secondary btn-sm rounded-pill w-100 fw-bold mt-auto">Ver Detalhes</a>
+            <a href="{% url 'receita_detalhe' item.id %}" class="btn btn-outline-secondary btn-sm rounded-pill w-100 fw-bold mt-auto">Ver Detalhes</a>
           </div>
         </div>
         {% endfor %}
@@ -167,7 +167,7 @@
       </div>
       <div class="modal-body">
         
-        <form method="GET" action="{% url 'alimento' %}">
+        <form method="GET" action="{% url 'receita' %}">
           <input type="hidden" name="q" value="{{ query }}">
           
           <div class="mb-4">
