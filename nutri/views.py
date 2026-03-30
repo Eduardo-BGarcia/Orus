@@ -1,11 +1,17 @@
 import csv
 import io
 from .models import Alimento
+from django.db.models import F
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
 
 class IndexView(TemplateView):
     template_name = "nutri/index.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['top_alimentos'] = Alimento.objects.filter().order_by('-visualizacoes')[:4]
+        return context
 
 class ContatoView(TemplateView):
     template_name = "nutri/contato.html"
@@ -18,52 +24,118 @@ class ContaView(TemplateView):
     
 class AlimentoView(TemplateView):
     template_name = "nutri/alimento.html"
-
+    
 class ReceitaView(TemplateView):
     template_name = "nutri/receita.html"
+    
 
 class ImportarCSVView(TemplateView):
     template_name = "nutri/importar_csv.html"
-   
+    
+    
 def alimento(request):
     
     query = request.GET.get('q', '')
     ordem = request.GET.get('ordem', '')
 
     if query != '' or ordem != '':
-        alimentos = Alimento.objects.filter(receita=False) # Exclui receitas da listagem de alimentos
-
+        alimentos = Alimento.objects.filter(receita=False)
         if query:
             alimentos = alimentos.filter(nome__icontains=query)
 
-        # VALIDAÇÃO DE SEGURANÇA: Checa se a coluna que veio do HTML realmente existe no banco
         campos_validos = [f.name for f in Alimento._meta.get_fields()]
-        campo_limpo = ordem.replace('-', '') # Tira o sinal de menos (que indica ordem decrescente)
+        campo_limpo = ordem.replace('-', '')
         
         if campo_limpo in campos_validos:
             alimentos = alimentos.order_by(ordem)
-        # else:
-        #     alimentos = alimentos.order_by('nome') # Padrão alfabético
 
         alimentos = alimentos[:30]
+
+        campo_limpo = ordem.replace('-', '')
+        if campo_limpo and campo_limpo in campos_validos:
+            for a in alimentos:
+                a.valor_destaque = getattr(a, campo_limpo)
+                a.label_destaque = campo_limpo.replace('_', ' ')
+        
+        top_4_alimentos = Alimento.objects.filter(receita=False, visualizacoes__gt=0).order_by('-visualizacoes')[:4]
         
         context = {
             'alimentos': alimentos,
             'query': query,
-            'ordem_atual': ordem
+            'ordem_atual': ordem,
+            'top_4_alimentos': top_4_alimentos
         }
         
         return render(request, 'nutri/alimento.html', context)
+
+    top_4_alimentos = Alimento.objects.filter(receita=False, visualizacoes__gt=0).order_by('-visualizacoes')[:4]
+        
+    context = {
+        'alimentos': None,
+        'query': None,
+        'ordem_atual': None,
+        'top_4_alimentos': top_4_alimentos
+    }
     
-    
-    return render(request, 'nutri/alimento.html')
+    return render(request, 'nutri/alimento.html', context)
 
 def alimento_detalhe(request, id):
-    # Busca o alimento específico pelo ID
     item = get_object_or_404(Alimento, id=id)
-    
-    # Envia para a nova página
+    Alimento.objects.filter(id=id).update(visualizacoes=F('visualizacoes') + 1)
     return render(request, 'nutri/alimento_detalhe.html', {'item': item})
+
+def receita(request):
+    query = request.GET.get('q', '')
+    ordem = request.GET.get('ordem', '')
+
+    if query != '' or ordem != '':
+        alimentos = Alimento.objects.filter(receita=True)
+
+        if query:
+            alimentos = alimentos.filter(nome__icontains=query)
+
+        campos_validos = [f.name for f in Alimento._meta.get_fields()]
+        campo_limpo = ordem.replace('-', '')
+        
+        if campo_limpo in campos_validos:
+            alimentos = alimentos.order_by(ordem)
+
+        alimentos = alimentos[:30]
+
+        campo_limpo = ordem.replace('-', '')
+        if campo_limpo and campo_limpo in campos_validos:
+            for a in alimentos:
+                a.valor_destaque = getattr(a, campo_limpo)
+                a.label_destaque = campo_limpo.replace('_', ' ')
+        
+        top_4_receitas = Alimento.objects.filter(receita=True).order_by('-visualizacoes')[:4]
+        
+        context = {
+            'alimentos': alimentos,
+            'query': query,
+            'ordem_atual': ordem,
+            'top_4_receitas': top_4_receitas
+        }
+        
+        return render(request, 'nutri/receita.html', context)
+    
+    top_4_receitas = Alimento.objects.filter(receita=True, visualizacoes__gt=0).order_by('-visualizacoes')[:4]
+        
+    context = {
+        'alimentos': None,
+        'query': None,
+        'ordem_atual': None,
+        'top_4_receitas': top_4_receitas
+    }
+    
+    return render(request, 'nutri/receita.html', context)
+    
+    return render(request, 'nutri/receita.html')
+
+def receita_detalhe(request, id):
+    item = get_object_or_404(Alimento, id=id)
+    Alimento.objects.filter(id=id).update(visualizacoes=F('visualizacoes') + 1)
+    return render(request, 'nutri/receita_detalhe.html', {'item': item})
     
 def limpar_numero(valor):
     """
@@ -78,7 +150,6 @@ def limpar_numero(valor):
         return None
         
     try:
-        # Troca a vírgula brasileira pelo ponto do padrão americano/banco de dados
         return float(valor.replace(',', '.'))
     except ValueError:
         return None
@@ -93,26 +164,16 @@ def importar_csv(request):
             mensagens.append("Erro: O arquivo precisa ser um .csv")
         else:
             try:
-                # Lendo o arquivo da memória. O encoding 'iso-8859-1' ou 'latin-1' 
-                # ajuda com aqueles caracteres zoados que vimos no cabeçalho.
                 dataset = arquivo.read().decode('utf-8-sig')
                 io_string = io.StringIO(dataset)
-                
-                # Configuramos o delimitador como ponto e vírgula
                 leitor_csv = csv.reader(io_string, delimiter=';')
-                
-                # Pula a primeira linha (cabeçalho)
                 next(leitor_csv) 
-                
                 lista_alimentos = []
                 
                 for linha in leitor_csv:
-                    # Ignora linhas totalmente vazias no final do arquivo
                     if not linha or len(linha) < 30:
                         continue
                         
-                    # Mapeando as colunas do seu CSV para o modelo
-                    # Os índices (linha[0], linha[1]) dependem da ordem exata do seu arquivo
                     alimento = Alimento(
                         nome=linha[1],
                         energia_kj=limpar_numero(linha[2]),
@@ -153,8 +214,6 @@ def importar_csv(request):
                     )
                     lista_alimentos.append(alimento)
                 
-                # O bulk_create salva toda a lista no banco de dados em uma única 
-                # operação, deixando a performance incrível!
                 Alimento.objects.bulk_create(lista_alimentos)
                 
                 mensagens.append(f"Sucesso! {len(lista_alimentos)} alimentos importados.")

@@ -1,3 +1,278 @@
 {% extends "nutri/modelo.html" %}
 
 {% load static %}
+
+{% block hero %}
+    <div>
+        <img src="{% static 'imgs/receita_hero.jpg' %}" alt="Imagem de receitas" class="img-fluid w-100" style="max-height: 400px; object-fit: cover;">
+    </div>
+{% endblock hero %}
+
+{% block conteudo %}
+<section class="py-5 mt-5">
+  <div class="container">
+
+    <div class="text-center mb-5 mt-4">
+      <h2 class="fw-bold display-6" style="color: var(--theme-primary); font-family: var(--font-display);">
+        Receitas em Destaque
+      </h2>
+      <p class="text-muted">As receitas mais consultadas pela nossa comunidade.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      {% for item in top_4_receitas %}
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center d-flex flex-column position-relative" style="background-color: var(--surface);">
+          
+          <div class="position-absolute top-0 end-0 mt-2 me-2 z-2">
+            <span class="badge rounded-pill shadow-sm" style="background-color: var(--theme-tertiary);">
+              <i class="bi bi-eye me-1"></i> {{ item.visualizacoes }}
+            </span>
+          </div>
+
+          <div class="mb-3">
+            {% if item.foto %}
+              <img src="{{ item.foto.url }}" alt="{{ item.nome }}" class="img-fluid rounded-4 shadow-sm" style="height: 140px; width: 100%; object-fit: cover;">
+            {% else %}
+              <img src="{% static 'imgs/placeholder.png' %}" alt="Foto ilustrativa" class="img-fluid rounded-4 shadow-sm" style="height: 140px; width: 100%; object-fit: cover;">
+            {% endif %}
+          </div>
+          
+          <h6 class="fw-bold mb-3 flex-grow-1" style="color: var(--theme-neutral);">
+            {{ item.nome|safe }}
+          </h6>
+
+          <div class="d-flex justify-content-around align-items-center mb-3">
+            <div>
+              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Kcal</small>
+              <strong class="fs-5" style="color: var(--theme-primary);">{{ item.energia_kcal|default:"0" }}</strong>
+            </div>
+            <div>
+              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Carbo</small>
+              <strong class="fs-5 text-warning">{{ item.carboidrato_total|default:"0" }}</strong>
+            </div>
+            <div>
+              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Prot</small>
+              <strong class="fs-5 text-success">{{ item.proteina|default:"0" }}</strong>
+            </div>
+          </div>
+          
+          <a href="{% url 'alimento_detalhe' item.id %}" class="btn btn-outline-secondary btn-sm rounded-pill w-100 fw-bold mt-auto">Ver Detalhes</a>
+        </div>
+      </div>
+      
+      {% empty %}
+      <div class="col-12 text-center py-2">
+        <p class="text-muted">Nenhum alimento foi visualizado ainda. Seja o primeiro a buscar!</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mb-5 mt-4">
+      <h1 class="fw-bold display-5" style="color: var(--theme-primary); font-family: var(--font-display);">Tabela de Receitas</h1>
+      <p class="text-muted">Busque e filtre informações nutricionais de mais de 5.000 itens.</p>
+    </div>
+
+    <form method="GET" action="{% url 'receita' %}" class="row g-3 justify-content-center mb-5">
+      
+      <div class="col-md-8 col-lg-6">
+        <div class="input-group input-group-lg shadow-sm border rounded-pill overflow-hidden">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-search text-muted"></i></span>
+          <input type="text" name="q" value="{{ query }}" class="form-control border-0 shadow-none" placeholder="Ex: Vitamina de abacate...">
+          <button class="btn px-4 fw-bold" type="submit" style="background-color: var(--theme-primary); color: white;">Buscar</button>
+
+        </div>
+      </div>
+      
+      <div class="col-12 text-center mt-3">
+        <div class="col-12 text-center mt-3">
+            <button type="button" class="btn btn-outline-secondary rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalFiltro">
+            <i class="bi bi-sliders me-2"></i> Ordenar e Filtrar
+            </button>
+          </div>
+      </div>
+    </form>
+
+    <div class="row g-4">
+        {% for item in alimentos %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center d-flex flex-column" style="background-color: var(--surface-alt);">
+            
+          <div>
+              <img src="{% static 'imgs/placeholder.png' %}" alt="Foto ilustrativa" class="img-fluid rounded-4 shadow-sm" style="height: 100%; width: 85%; object-fit: cover;">
+          </div>
+            
+            <div class="d-flex flex-column justify-content-between flex-grow-1 mb-4 mt-4">
+              
+              <div>
+                <h5 class="fw-bold mb-4" style="color: var(--theme-neutral);">{{ item.nome|safe }}</h5>
+              </div>
+
+              <div class="d-flex justify-content-around align-items-center mb-4">
+                
+                {% if ordem_atual %}
+                <div>
+                  <small class="text-muted d-block fw-bold" style="font-size: 0.70rem; text-transform: uppercase;">{{ item.label_destaque }}</small>
+                  <strong class="fs-4" style="color: var(--theme-primary);">{{ item.valor_destaque|default:"0" }}</strong>
+                </div>
+                {% else %}
+                <div>
+                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Kcal</small>
+                  <strong class="fs-4" style="color: var(--theme-primary);">{{ item.energia_kcal|default:"0" }}</strong>
+                </div>
+                {% endif %}
+
+                {% if ordem_atual %}
+                <div>
+                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Kcal</small>
+                  <strong class="fs-4 text-warning">{{ item.energia_kcal|default:"0" }}</strong>
+                </div>
+                {% else %}
+                <div>
+                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Carbo</small>
+                  <strong class="fs-4 text-warning">{{ item.carboidrato_total|default:"0" }}</strong>
+                </div>
+                {% endif %}
+
+                {% if ordem_atual %}
+                <div>
+                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Carbo</small>
+                  <strong class="fs-4 text-success">{{ item.carboidrato_total|default:"0" }}</strong>
+                </div>
+                {% else %}
+                <div>
+                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Prot</small>
+                  <strong class="fs-4 text-success">{{ item.proteina|default:"0" }}</strong>
+                </div>
+                {% endif %}
+
+              </div>
+              </div>
+            
+            <a href="{% url 'alimento_detalhe' item.id %}" class="btn btn-outline-secondary btn-sm rounded-pill w-100 fw-bold mt-auto">Ver Detalhes</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+  </div>
+
+  <div class="modal fade" id="modalFiltro" tabindex="-1" aria-labelledby="modalFiltroLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4" style="background-color: var(--surface);">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" id="modalFiltroLabel" style="color: var(--theme-primary);">Opções de Ordenação</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+        <form method="GET" action="{% url 'alimento' %}">
+          <input type="hidden" name="q" value="{{ query }}">
+          
+          <div class="mb-4">
+            <label class="form-label fw-bold text-muted">Ordenar lista por:</label>
+            <select class="form-select form-select-lg rounded-3" name="ordem">
+              <option value="" {% if not ordem_atual %}selected{% endif %}>Ordem Alfabética (Padrão)</option>
+
+              <optgroup label="Macronutrientes">
+                <option value="-energia_kcal" {% if ordem_atual == '-energia_kcal' %}selected{% endif %}>🔥 + Calorias</option>
+                <option value="energia_kcal" {% if ordem_atual == 'energia_kcal' %}selected{% endif %}>🧊 - Calorias</option>
+                <option value="-proteina" {% if ordem_atual == '-proteina' %}selected{% endif %}>💪 + Proteína</option>
+                <option value="proteina" {% if ordem_atual == 'proteina' %}selected{% endif %}>💪 - Proteína</option>
+                <option value="-carboidrato_total" {% if ordem_atual == '-carboidrato_total' %}selected{% endif %}>🍞 + Carboidratos</option>
+                <option value="carboidrato_total" {% if ordem_atual == 'carboidrato_total' %}selected{% endif %}>🍞 - Carboidratos</option>
+                <option value="-lipidios" {% if ordem_atual == '-lipidios' %}selected{% endif %}>🧈 + Gorduras (Lipídios)</option>
+                <option value="lipidios" {% if ordem_atual == 'lipidios' %}selected{% endif %}>🧈 - Gorduras (Lipídios)</option>
+                <option value="-fibra_alimentar" {% if ordem_atual == '-fibra_alimentar' %}selected{% endif %}>🌾 + Fibras</option>
+                <option value="fibra_alimentar" {% if ordem_atual == 'fibra_alimentar' %}selected{% endif %}>🌾 - Fibras</option>
+              </optgroup>
+
+              <optgroup label="Perfil Lipídico">
+                <option value="-colesterol" {% if ordem_atual == '-colesterol' %}selected{% endif %}>🥩 + Colesterol</option>
+                <option value="colesterol" {% if ordem_atual == 'colesterol' %}selected{% endif %}>🧊 - Colesterol</option>
+                <option value="-acidos_graxos_saturados" {% if ordem_atual == '-acidos_graxos_saturados' %}selected{% endif %}>🥓 + Ác. Graxos Saturados</option>
+                <option value="acidos_graxos_saturados" {% if ordem_atual == 'acidos_graxos_saturados' %}selected{% endif %}>🥓 - Ác. Graxos Saturados</option>
+                <option value="-acidos_graxos_monoinsaturados" {% if ordem_atual == '-acidos_graxos_monoinsaturados' %}selected{% endif %}>🥑 + Ác. Graxos Monoinsaturados</option>
+                <option value="acidos_graxos_monoinsaturados" {% if ordem_atual == 'acidos_graxos_monoinsaturados' %}selected{% endif %}>🥑 - Ác. Graxos Monoinsaturados</option>
+                <option value="-acidos_graxos_polinsaturados" {% if ordem_atual == '-acidos_graxos_polinsaturados' %}selected{% endif %}>🐟 + Ác. Graxos Polinsaturados</option>
+                <option value="acidos_graxos_polinsaturados" {% if ordem_atual == 'acidos_graxos_polinsaturados' %}selected{% endif %}>🐟 - Ác. Graxos Polinsaturados</option>
+                <option value="-acidos_graxos_trans" {% if ordem_atual == '-acidos_graxos_trans' %}selected{% endif %}>🍔 + Ác. Graxos Trans</option>
+                <option value="acidos_graxos_trans" {% if ordem_atual == 'acidos_graxos_trans' %}selected{% endif %}>🍔 - Ác. Graxos Trans</option>
+              </optgroup>
+
+              <optgroup label="Minerais">
+                <option value="-calcio" {% if ordem_atual == '-calcio' %}selected{% endif %}>🦴 + Cálcio</option>
+                <option value="calcio" {% if ordem_atual == 'calcio' %}selected{% endif %}>🦴 - Cálcio</option>
+                <option value="-ferro" {% if ordem_atual == '-ferro' %}selected{% endif %}>🩸 + Ferro</option>
+                <option value="ferro" {% if ordem_atual == 'ferro' %}selected{% endif %}>🩸 - Ferro</option>
+                <option value="-sodio" {% if ordem_atual == '-sodio' %}selected{% endif %}>🧂 + Sódio</option>
+                <option value="sodio" {% if ordem_atual == 'sodio' %}selected{% endif %}>🧂 - Sódio</option>
+                <option value="-fosforo" {% if ordem_atual == '-fosforo' %}selected{% endif %}>⚡ + Fósforo</option>
+                <option value="fosforo" {% if ordem_atual == 'fosforo' %}selected{% endif %}>⚡ - Fósforo</option>
+                <option value="-magnesio" {% if ordem_atual == '-magnesio' %}selected{% endif %}>🟢 + Magnésio</option>
+                <option value="magnesio" {% if ordem_atual == 'magnesio' %}selected{% endif %}>🟢 - Magnésio</option>
+                <option value="-potassio" {% if ordem_atual == '-potassio' %}selected{% endif %}>🍌 + Potássio</option>
+                <option value="potassio" {% if ordem_atual == 'potassio' %}selected{% endif %}>🍌 - Potássio</option>
+                <option value="-zinco" {% if ordem_atual == '-zinco' %}selected{% endif %}>🛡️ + Zinco</option>
+                <option value="zinco" {% if ordem_atual == 'zinco' %}selected{% endif %}>🛡️ - Zinco</option>
+                <option value="-cobre" {% if ordem_atual == '-cobre' %}selected{% endif %}>🪙 + Cobre</option>
+                <option value="cobre" {% if ordem_atual == 'cobre' %}selected{% endif %}>🪙 - Cobre</option>
+                <option value="-selenio" {% if ordem_atual == '-selenio' %}selected{% endif %}>🛡️ + Selênio</option>
+                <option value="selenio" {% if ordem_atual == 'selenio' %}selected{% endif %}>🛡️ - Selênio</option>
+              </optgroup>
+
+              <optgroup label="Vitaminas">
+                <option value="-vitamina_c" {% if ordem_atual == '-vitamina_c' %}selected{% endif %}>🍊 Mais Vitamina C</option>
+                <option value="vitamina_c" {% if ordem_atual == 'vitamina_c' %}selected{% endif %}>🍊 Menos Vitamina C</option>
+                <option value="-vitamina_a_re" {% if ordem_atual == '-vitamina_a_re' %}selected{% endif %}>👁️ Mais Vitamina A (RE)</option>
+                <option value="vitamina_a_re" {% if ordem_atual == 'vitamina_a_re' %}selected{% endif %}>👁️ Menos Vitamina A (RE)</option>
+                <option value="-vitamina_d" {% if ordem_atual == '-vitamina_d' %}selected{% endif %}>☀️ Mais Vitamina D</option>
+                <option value="vitamina_d" {% if ordem_atual == 'vitamina_d' %}selected{% endif %}>☀️ Menos Vitamina D</option>
+                <option value="-vitamina_e_alfa_toceferol" {% if ordem_atual == '-vitamina_e_alfa_toceferol' %}selected{% endif %}>🥜 Mais Vitamina E</option>
+                <option value="vitamina_e_alfa_toceferol" {% if ordem_atual == 'vitamina_e_alfa_toceferol' %}selected{% endif %}>🥜 Menos Vitamina E</option>
+                <option value="-vitamina_b1_tiamina" {% if ordem_atual == '-vitamina_b1_tiamina' %}selected{% endif %}>🌾 Mais Vitamina B1 (Tiamina)</option>
+                <option value="vitamina_b1_tiamina" {% if ordem_atual == 'vitamina_b1_tiamina' %}selected{% endif %}>🌾 Menos Vitamina B1 (Tiamina)</option>
+                <option value="-vitamina_b2_riboflavina" {% if ordem_atual == '-vitamina_b2_riboflavina' %}selected{% endif %}>🥛 Mais Vitamina B2 (Riboflavina)</option>
+                <option value="vitamina_b2_riboflavina" {% if ordem_atual == 'vitamina_b2_riboflavina' %}selected{% endif %}>🥛 Menos Vitamina B2 (Riboflavina)</option>
+                <option value="-vitamina_b3_niacina" {% if ordem_atual == '-vitamina_b3_niacina' %}selected{% endif %}>🍗 Mais Vitamina B3 (Niacina)</option>
+                <option value="vitamina_b3_niacina" {% if ordem_atual == 'vitamina_b3_niacina' %}selected{% endif %}>🍗 Menos Vitamina B3 (Niacina)</option>
+                <option value="-vitamina_b6" {% if ordem_atual == '-vitamina_b6' %}selected{% endif %}>🧠 Mais Vitamina B6</option>
+                <option value="vitamina_b6" {% if ordem_atual == 'vitamina_b6' %}selected{% endif %}>🧠 Menos Vitamina B6</option>
+                <option value="-vitamina_b9" {% if ordem_atual == '-vitamina_b9' %}selected{% endif %}>🥬 Mais Vitamina B9 (Folato)</option>
+                <option value="vitamina_b9" {% if ordem_atual == 'vitamina_b9' %}selected{% endif %}>🥬 Menos Vitamina B9 (Folato)</option>
+                <option value="-vitamina_b12" {% if ordem_atual == '-vitamina_b12' %}selected{% endif %}>🥩 Mais Vitamina B12</option>
+                <option value="vitamina_b12" {% if ordem_atual == 'vitamina_b12' %}selected{% endif %}>🥩 Menos Vitamina B12</option>
+              </optgroup>
+
+              <optgroup label="Outros Componentes">
+                <option value="-energia_kj" {% if ordem_atual == '-energia_kj' %}selected{% endif %}>⚡ Mais Energia (kJ)</option>
+                <option value="energia_kj" {% if ordem_atual == 'energia_kj' %}selected{% endif %}>⚡ Menos Energia (kJ)</option>
+                <option value="-umidade" {% if ordem_atual == '-umidade' %}selected{% endif %}>💧 Mais Umidade</option>
+                <option value="umidade" {% if ordem_atual == 'umidade' %}selected{% endif %}>💧 Menos Umidade</option>
+                <option value="-cinzas" {% if ordem_atual == '-cinzas' %}selected{% endif %}>🪨 Mais Cinzas</option>
+                <option value="cinzas" {% if ordem_atual == 'cinzas' %}selected{% endif %}>🪨 Menos Cinzas</option>
+                <option value="-alcool" {% if ordem_atual == '-alcool' %}selected{% endif %}>🍷 Mais Álcool</option>
+                <option value="alcool" {% if ordem_atual == 'alcool' %}selected{% endif %}>🍷 Menos Álcool</option>
+                <option value="-sal_adicao" {% if ordem_atual == '-sal_adicao' %}selected{% endif %}>🧂 Mais Sal de Adição</option>
+                <option value="sal_adicao" {% if ordem_atual == 'sal_adicao' %}selected{% endif %}>🧂 Menos Sal de Adição</option>
+                <option value="-acucar_adicao" {% if ordem_atual == '-acucar_adicao' %}selected{% endif %}>🍬 Mais Açúcar de Adição</option>
+                <option value="acucar_adicao" {% if ordem_atual == 'acucar_adicao' %}selected{% endif %}>🍬 Menos Açúcar de Adição</option>
+              </optgroup>
+              
+              </select>
+          </div>
+          
+          <button type="submit" class="btn w-100 rounded-pill fw-bold py-2 shadow-sm" style="background-color: var(--theme-primary); color: white;">
+            Aplicar Filtro
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</section>
+
+
+{% endblock conteudo %}

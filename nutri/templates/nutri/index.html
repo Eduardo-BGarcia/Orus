@@ -7,7 +7,7 @@
          style="background-image: url('{% static 'imgs/index_hero.jpg' %}');">
   
   <div class="position-absolute top-0 start-0 w-100 h-100"
-       style="background: linear-gradient(to right, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.1) 100%); z-index: -1;">
+       style="background: linear-gradient(to right, rgba(255,255,255,0.95) 20%, rgba(255,255,255,0.55) 60%, rgba(255,255,255,0.1) 100%); z-index: -1;">
   </div>
   
   <div class="container position-relative z-1">
@@ -22,19 +22,6 @@
           Acompanhe sua jornada nutricional com o rigor de um especialista e a leveza de um entusiasta.
         </p>
 
-        <form class="position-relative mt-5 shadow-lg rounded-pill border" style="max-width: 550px; background: white; padding: 6px;">
-          <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-4 text-muted fs-5"></i>
-          
-          <input type="text" class="form-control form-control-lg border-0 shadow-none ps-5"
-                 placeholder="O que você quer consultar hoje?"
-                 style="border-radius: 50px; font-size: 1.05rem; background: transparent;">
-          
-          <button type="submit" class="btn rounded-pill position-absolute top-50 end-0 translate-middle-y me-2 px-4 fw-bold"
-                  style="background-color: var(--theme-primary); color: white;">
-            Buscar
-          </button>
-        </form>
-
       </div>
     </div>
   </div>
@@ -42,51 +29,72 @@
 {% endblock hero %}
 
 {% block conteudo %}
-
-<!-- Seção rápida de recursos -->
 <section class="py-5 bg-surface-alt">
   <div class="container">
-    <div class="text-center mb-4">
-      <h2 class="fw-display mb-2">Recursos Principais</h2>
-      <p class="text-secondary">Ferramentas essenciais para organizar campeonatos e inscrever jogadores e equipes.</p>
+    
+    <div class="text-center mb-5 mt-4">
+      <h2 class="fw-bold display-6" style="color: var(--theme-primary); font-family: var(--font-display);">
+        Alimentos em Destaque
+      </h2>
+      <p class="text-muted">Os alimentos mais consultados pela nossa comunidade.</p>
     </div>
     
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card-petrol p-4 h-100 text-center">
-          <div class="feature-icon bg-primary bg-opacity-10 mx-auto mb-3"><i class="bi bi-calendar-check fs-4 text-primary"></i></div>
-          <h5 class="fw-display mb-2">Criar Torneios</h5>
-          <p class="text-secondary mb-0">Defina modalidades, regras e chaves de disputa.</p>
+    <div class="row g-4 justify-content-center">
+      {% for item in top_alimentos %}
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center d-flex flex-column position-relative" style="background-color: var(--surface);">
+          
+          <div class="position-absolute top-0 end-0 mt-2 me-2 z-2">
+            <span class="badge rounded-pill shadow-sm" style="background-color: var(--theme-tertiary);">
+              <i class="bi bi-eye me-1"></i> {{ item.visualizacoes }}
+            </span>
+          </div>
+
+          <div class="mb-3">
+            {% if item.foto %}
+              <img src="{{ item.foto.url }}" alt="{{ item.nome }}" class="img-fluid rounded-4 shadow-sm" style="height: 140px; width: 100%; object-fit: cover;">
+            {% else %}
+              <img src="{% static 'imgs/placeholder.png' %}" alt="Foto ilustrativa" class="img-fluid rounded-4 shadow-sm" style="height: 140px; width: 100%; object-fit: cover;">
+            {% endif %}
+          </div>
+          
+          <h6 class="fw-bold mb-3 flex-grow-1" style="color: var(--theme-neutral);">
+            {{ item.nome|safe }}
+          </h6>
+
+          <div class="d-flex justify-content-around align-items-center mb-3">
+            <div>
+              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Kcal</small>
+              <strong class="fs-5" style="color: var(--theme-primary);">{{ item.energia_kcal|default:"0" }}</strong>
+            </div>
+            <div>
+              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Carbo</small>
+              <strong class="fs-5 text-warning">{{ item.carboidrato_total|default:"0" }}</strong>
+            </div>
+            <div>
+              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Prot</small>
+              <strong class="fs-5 text-success">{{ item.proteina|default:"0" }}</strong>
+            </div>
+          </div>
+          
+          <a href="{% url 'alimento_detalhe' item.id %}" class="btn btn-outline-secondary btn-sm rounded-pill w-100 fw-bold mt-auto">Ver Detalhes</a>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card-petrol p-4 h-100 text-center">
-          <div class="feature-icon bg-success bg-opacity-10 mx-auto mb-3"><i class="bi bi-people-fill fs-4 text-success"></i></div>
-          <h5 class="fw-display mb-2">Inscrição de Equipes</h5>
-          <p class="text-secondary mb-0">Jogadores inscrevem suas equipes em modalidades distintas.</p>
-        </div>
+      
+      {% empty %}
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">Nenhum alimento foi visualizado ainda. Seja o primeiro a buscar!</p>
       </div>
-      <div class="col-md-4">
-        <div class="card-petrol p-4 h-100 text-center">
-          <div class="feature-icon bg-info bg-opacity-10 mx-auto mb-3"><i class="bi bi-bar-chart-line fs-4 text-info"></i></div>
-          <h5 class="fw-display mb-2">Resultados & Rankings</h5>
-          <p class="text-secondary mb-0">Acompanhe placares, tabelas e evolução dos jogadores.</p>
-        </div>
-      </div>
+      {% endfor %}
     </div>
+
+    <div class="text-center mt-5">
+      <a href="{% url 'alimento' %}" class="btn rounded-pill px-5 py-2 fw-bold shadow-sm" style="background-color: var(--theme-primary); color: white;">
+        Explorar Tabela Completa
+      </a>
+    </div>
+
   </div>
 </section>
-
-<!-- CTA simples -->
-<section class="py-5 bg-petrol">
-  <div class="container text-center">
-    <h3 class="fw-display text-white mb-2">Pronto para competir?</h3>
-    <p class="text-white-75 mb-3" style="max-width:600px; margin:0 auto">Crie ou participe de campeonatos organizados pelo IFPR e faça parte da comunidade.</p>
-    <div class="d-flex justify-content-center gap-3">
-      <a href="{% url "contato" %}" class="btn btn-light px-4 rounded-2 fw-semibold"><i class="bi bi-envelope me-1"></i>Entrar em contato</a>
-      <a href="{% url "sobre" %}" class="btn btn-auth px-4 rounded-2"><i class="bi bi-info-circle me-1"></i>Saiba mais</a>
-    </div>
-  </div>
-</section>
-
 {% endblock conteudo %}

@@ -16,13 +16,13 @@
 
     <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4" style="background-color: var(--surface-alt);">
       <div class="row align-items-center">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
           <span class="badge rounded-pill mb-3" style="background-color: var(--theme-secondary); color: white;">Valores para 100g</span>
           <h1 class="fw-bold display-5 mb-0" style="color: var(--theme-neutral); font-family: var(--font-display);">
             {{ item.nome|safe }}
           </h1>
         </div>
-        <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+        <div class="col-lg-2 text-lg-end mt-4 mt-lg-0 mw-50">
           <h2 class="display-4 fw-bold mb-0" style="color: var(--theme-primary);">{{ item.energia_kcal|default:"0" }}</h2>
           <span class="text-muted fw-bold text-uppercase" style="letter-spacing: 2px;">Kcal</span>
         </div>

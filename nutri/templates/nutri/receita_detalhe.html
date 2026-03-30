@@ -1,0 +1,119 @@
+{% extends "nutri/modelo.html" %}
+
+{% load static %}
+
+{% block hero %}
+
+{% endblock hero %}
+
+{% block conteudo %}
+<section class="py-5 mt-5">
+  <div class="container">
+    
+    <a href="{% url 'alimento' %}" class="btn btn-sm btn-outline-secondary rounded-pill mb-4">
+      <i class="bi bi-arrow-left me-1"></i> Voltar para a lista
+    </a>
+
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4" style="background-color: var(--surface-alt);">
+      <div class="row align-items-center">
+        <div class="col-lg-10">
+          <span class="badge rounded-pill mb-3" style="background-color: var(--theme-secondary); color: white;">Valores para 100g</span>
+          <h1 class="fw-bold display-5 mb-0" style="color: var(--theme-neutral); font-family: var(--font-display);">
+            {{ item.nome|safe }}
+          </h1>
+        </div>
+        <div class="col-lg-2 text-lg-end mt-4 mt-lg-0 mw-50">
+          <h2 class="display-4 fw-bold mb-0" style="color: var(--theme-primary);">{{ item.energia_kcal|default:"0" }}</h2>
+          <span class="text-muted fw-bold text-uppercase" style="letter-spacing: 2px;">Kcal</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      
+      <div class="col-md-6 col-xl-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
+          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-pie-chart-fill me-2"></i>Macronutrientes</h4>
+          <ul class="list-group list-group-flush" style="background: transparent;">
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Carboidrato Total</span><span class="fw-bold">{{ item.carboidrato_total|default:"0" }} g</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Carbo Disponível</span><span class="fw-bold">{{ item.carboidrato_disponivel|default:"0" }} g</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Proteínas</span><span class="fw-bold text-success">{{ item.proteina|default:"0" }} g</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Lipídios (Gorduras)</span><span class="fw-bold">{{ item.lipidios|default:"0" }} g</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-0" style="background: transparent;"><span class="text-muted fw-bold">Fibra Alimentar</span><span class="fw-bold">{{ item.fibra_alimentar|default:"0" }} g</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
+          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-droplet-fill me-2"></i>Perfil Lipídico</h4>
+          <ul class="list-group list-group-flush" style="background: transparent;">
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Colesterol</span><span class="fw-bold text-danger">{{ item.colesterol|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Graxos Saturados</span><span class="fw-bold">{{ item.acidos_graxos_saturados|default:"0" }} g</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Monoinsaturados</span><span class="fw-bold">{{ item.acidos_graxos_monoinsaturados|default:"0" }} g</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Polinsaturados</span><span class="fw-bold">{{ item.acidos_graxos_polinsaturados|default:"0" }} g</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-0" style="background: transparent;"><span class="text-muted fw-bold">Graxos Trans</span><span class="fw-bold text-danger">{{ item.acidos_graxos_trans|default:"0" }} g</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
+          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-heptagon-fill me-2"></i>Minerais</h4>
+          <ul class="list-group list-group-flush" style="background: transparent;">
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Cálcio</span><span class="fw-bold">{{ item.calcio|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Ferro</span><span class="fw-bold">{{ item.ferro|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Sódio</span><span class="fw-bold">{{ item.sodio|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Magnésio</span><span class="fw-bold">{{ item.magnesio|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Fósforo</span><span class="fw-bold">{{ item.fosforo|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Potássio</span><span class="fw-bold">{{ item.potassio|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Zinco</span><span class="fw-bold">{{ item.zinco|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Cobre</span><span class="fw-bold">{{ item.cobre|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-0" style="background: transparent;"><span class="text-muted fw-bold">Selênio</span><span class="fw-bold">{{ item.selenio|default:"0" }} mcg</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
+          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-stars me-2"></i>Vitaminas</h4>
+          <ul class="list-group list-group-flush" style="background: transparent;">
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vit. C</span><span class="fw-bold">{{ item.vitamina_c|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vit. A (RE)</span><span class="fw-bold">{{ item.vitamina_a_re|default:"0" }} mcg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vit. D</span><span class="fw-bold">{{ item.vitamina_d|default:"0" }} mcg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vit. E</span><span class="fw-bold">{{ item.vitamina_e_alfa_toceferol|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Tiamina (B1)</span><span class="fw-bold">{{ item.vitamina_b1_tiamina|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Riboflavina (B2)</span><span class="fw-bold">{{ item.vitamina_b2_riboflavina|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Niacina (B3)</span><span class="fw-bold">{{ item.vitamina_b3_niacina|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vitamina B6</span><span class="fw-bold">{{ item.vitamina_b6|default:"0" }} mg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Folato (B9)</span><span class="fw-bold">{{ item.vitamina_b9|default:"0" }} mcg</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-0" style="background: transparent;"><span class="text-muted fw-bold">Vitamina B12</span><span class="fw-bold">{{ item.vitamina_b12|default:"0" }} mcg</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-xl-8">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
+          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-info-circle-fill me-2"></i>Outros Componentes</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-group list-group-flush" style="background: transparent;">
+                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Energia (kJ)</span><span class="fw-bold">{{ item.energia_kj|default:"0" }} kJ</span></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Umidade</span><span class="fw-bold">{{ item.umidade|default:"0" }} g</span></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Cinzas</span><span class="fw-bold">{{ item.cinzas|default:"0" }} g</span></li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group list-group-flush" style="background: transparent;">
+                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Álcool</span><span class="fw-bold">{{ item.alcool|default:"0" }} g</span></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Sal de Adição</span><span class="fw-bold">{{ item.sal_adicao|default:"0" }} g</span></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Açúcar de Adição</span><span class="fw-bold">{{ item.acucar_adicao|default:"0" }} g</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</section>
+{% endblock conteudo %}

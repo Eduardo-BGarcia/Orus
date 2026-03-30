@@ -5,6 +5,7 @@ class Alimento(models.Model):
     excluido = models.BooleanField(default=False, verbose_name="Excluído")
     nome = models.CharField(max_length=1000, verbose_name="Alimento")
     receita = models.BooleanField(default=False, verbose_name="É uma receita?")
+    visualizacoes = models.IntegerField(default=0, verbose_name="Visualizações")
     energia_kj = models.IntegerField(null=True, default=0, blank=True, verbose_name="Energia (KJ)")
     energia_kcal = models.IntegerField(null=True, blank=True, default=0, verbose_name="Energia (Kcal)")
     umidade = models.FloatField(null=True, blank=True, default=0, verbose_name="Umidade (g)")
