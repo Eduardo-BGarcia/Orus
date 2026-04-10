@@ -159,7 +159,16 @@
             <a href="{% url 'alimento_detalhe' item.id %}" class="btn btn-outline-secondary btn-sm rounded-pill w-100 fw-bold mt-auto">Ver Detalhes</a>
           </div>
         </div>
+        {% empty %}
+        {% if houve_busca %}
+        <div class="col-12 text-center py-2">
+          <p class="text-muted">Item buscado não foi encontrado!</p>
+        </div>
+        {% endif %}
         {% endfor %}
+
+        
+
       </div>
 
   </div>

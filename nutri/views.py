@@ -63,7 +63,8 @@ def alimento(request):
             'alimentos': alimentos,
             'query': query,
             'ordem_atual': ordem,
-            'top_4_alimentos': top_4_alimentos
+            'top_4_alimentos': top_4_alimentos,
+            'houve_busca': True
         }
         
         return render(request, 'nutri/alimento.html', context)
@@ -74,7 +75,8 @@ def alimento(request):
         'alimentos': None,
         'query': query,
         'ordem_atual': None,
-        'top_4_alimentos': top_4_alimentos
+        'top_4_alimentos': top_4_alimentos,
+        'houve_busca': False
     }
     
     return render(request, 'nutri/alimento.html', context)
@@ -114,7 +116,8 @@ def receita(request):
             'receitas': receitas,
             'query': query,
             'ordem_atual': ordem,
-            'top_4_receitas': top_4_receitas
+            'top_4_receitas': top_4_receitas,
+            'houve_busca': True
         }
         
         return render(request, 'nutri/receita.html', context)
@@ -125,7 +128,8 @@ def receita(request):
         'alimentos': None,
         'query': query,
         'ordem_atual': None,
-        'top_4_receitas': top_4_receitas
+        'top_4_receitas': top_4_receitas,
+        'houve_busca': False
     }
     
     return render(request, 'nutri/receita.html', context)
