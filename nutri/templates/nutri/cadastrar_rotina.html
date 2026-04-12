@@ -1,0 +1,26 @@
+{% extends "nutri/modelo.html" %}
+
+{% load static %}
+
+{% block hero %}
+{% endblock hero %}
+
+{% block conteudo %}
+<div class="form-container mt-5">
+    <div class="form-header">
+        <h2>Criar Novo Diário</h2>
+        <p>Defina os dados básicos para começar a adicionar alimentos.</p>
+    </div>
+
+    <form method="post" class="django-form">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+        
+        <div class="botoes-acao">
+            <a href="{% url 'conta' %}" class="btn-cancelar">Cancelar</a>
+            <button type="submit" class="btn-salvar">Criar Rotina</button>
+        </div>
+    </form>
+</div>
+{% endblock conteudo%}

@@ -122,3 +122,235 @@ a:hover { color: var(--theme-secondary); }
         padding-bottom: 80px !important;
     }
 }
+
+
+/* ─── FORMULÁRIOS DE AUTENTICAÇÃO E CRIAÇÃO (LOGIN, CADASTRO, ROTINAS) ─── */
+
+.form-container {
+    background-color: #ffffff; /* Fundo branco para destacar do body que usa --surface */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm); /* Utilizando sua variável de sombra */
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto; /* Garante centralização caso falte flexbox no pai */
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-header h2 {
+    color: var(--theme-primary);
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+.form-header p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 15px;
+}
+
+/* ─── ESTILIZANDO OS CAMPOS GERADOS PELO DJANGO ({{ form.as_p }}) ─── */
+.django-form p {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.django-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-body);
+}
+
+.django-form input[type="text"],
+.django-form input[type="password"],
+.django-form input[type="email"],
+.django-form input[type="date"],
+.django-form input[type="number"],
+.django-form select,
+.django-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text-body);
+    background-color: #ffffff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.django-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.django-form input:focus,
+.django-form select:focus,
+.django-form textarea:focus {
+    outline: none;
+    border-color: var(--theme-primary);
+    /* RGBA do seu --theme-primary (#2D6A4F) com 20% de opacidade */
+    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.2); 
+}
+
+/* Textos de ajuda e erros do Django */
+.django-form span.helptext {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+.django-form ul.errorlist {
+    color: var(--cp-danger);
+    list-style-type: none;
+    padding: 0;
+    font-size: 13px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/* ─── BOTÕES DOS FORMULÁRIOS ─── */
+.botoes-acao {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-salvar {
+    flex: 2;
+    background-color: var(--theme-primary);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Usando o mesmo padrão de hover dos seus botões Bootstrap */
+.btn-salvar:hover { 
+    background-color: var(--theme-neutral); 
+}
+
+.btn-cancelar {
+    flex: 1;
+    background-color: var(--surface-alt);
+    color: var(--text-body);
+    text-align: center;
+    text-decoration: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border: 1px solid var(--border-color);
+}
+
+.btn-cancelar:hover { 
+    background-color: var(--border-color); 
+    color: var(--text-body);
+}
+
+.dashboard-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Cabeçalho da Página */
+        .header-conta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--fundo-card);
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .header-conta h2 {
+            margin: 0;
+            color: var(--verde-escuro);
+        }
+
+        .btn-sair {
+            background-color: #fce8e6;
+            color: #d93025;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-sair:hover { background-color: #fad2ce; }
+
+        /* Grid para dividir Dados e Rotinas */
+        .grid-conta {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        /* Card Padrão */
+        .card {
+            background: var(--fundo-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--verde-escuro);
+            border-bottom: 2px solid var(--fundo-pagina);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .dados-lista p { margin: 15px 0; font-size: 15px; }
+        .dados-lista strong { color: var(--texto-secundario); display: block; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Lista de Rotinas */
+        .rotina-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+        .rotina-item:hover { border-color: var(--verde-escuro); }
+
+        .rotina-info h4 { margin: 0 0 5px 0; color: var(--texto-principal); font-size: 18px; }
+        .rotina-info p { margin: 0; color: var(--texto-secundario); font-size: 14px; }
+
+        .btn-primario {
+            background-color: var(--verde-escuro);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .btn-primario:hover { background-color: var(--verde-hover); }
+
+        .header-rotinas { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+        .header-rotinas h3 { margin: 0; border: none; padding: 0;}
+
+        @media (max-width: 768px) {
+            .grid-conta { grid-template-columns: 1fr; }
+        }

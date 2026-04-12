@@ -14,6 +14,12 @@
       <i class="bi bi-arrow-left me-1"></i> Voltar para a lista
     </a>
 
+    {% if user.is_authenticated %}
+    <button class="btn btn-sm btn-primary rounded-pill mb-4 float-end" data-bs-toggle="modal" data-bs-target="#modalAdicionarDiario">
+      <i class="bi bi-plus-circle me-1"></i> Adicionar a Rotina
+    </button>
+    {% endif %}
+
     <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4" style="background-color: var(--surface-alt);">
       <div class="row align-items-center">
         <div class="col-lg-10">
@@ -114,6 +120,72 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="modal fade" id="modalAdicionarDiario" tabindex="-1" aria-labelledby="modalAdicionarDiarioLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+          
+          <div class="modal-header border-bottom-0 pb-0">
+            <h5 class="modal-title fw-bold" id="modalAdicionarDiarioLabel" style="color: var(--theme-primary);">
+              Adicionar ao Diário
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <p class="text-muted mb-4">Adicionando: <strong>{{ item.nome }}</strong></p>
+
+            {% if minhas_rotinas %}
+              <form action="{% url 'salvar_item_rotina' item.id %}" method="POST">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                  <label class="form-label fw-bold" style="color: var(--theme-neutral);">Escolha o Diário/Rotina:</label>
+                  <select name="rotina_id" class="form-select rounded-3" required>
+                    <option value="" disabled selected>Selecione...</option>
+                    {% for rotina in minhas_rotinas %}
+                      <option value="{{ rotina.id }}">{{ rotina.nome }} ({{ rotina.data|date:"d/m/Y" }})</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold" style="color: var(--theme-neutral);">Refeição:</label>
+                  <select name="refeicao" class="form-select rounded-3" required>
+                    <option value="cafe">Café da Manhã</option>
+                    <option value="almoco">Almoço</option>
+                    <option value="lanche">Lanche da Tarde</option>
+                    <option value="jantar">Jantar</option>
+                  </select>
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label fw-bold" style="color: var(--theme-neutral);">Quantidade (gramas):</label>
+                  <div class="input-group">
+                    <input type="number" name="quantidade" class="form-control rounded-start-3" min="1" step="0.1" placeholder="Ex: 150" required>
+                    <span class="input-group-text rounded-end-3" style="background-color: var(--surface-alt);">g</span>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold">
+                  Salvar no Diário
+                </button>
+              </form>
+
+            {% else %}
+              <div class="text-center py-4">
+                <i class="bi bi-journal-x mb-3 d-block" style="font-size: 3rem; color: var(--text-muted);"></i>
+                <p class="text-muted">Você ainda não possui nenhum diário alimentar cadastrado.</p>
+                <a href="{% url 'criar_rotina' %}" class="btn btn-outline-primary rounded-pill px-4 mt-2">
+                  Cadastrar Meu Primeiro Diário
+                </a>
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
     </div>
 </section>
 {% endblock conteudo %}

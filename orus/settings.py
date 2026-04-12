@@ -25,10 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-89-9ta=@&@$53*n!o&(2p@07k51kywvee*d+z+9n2abl)6+29s'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -86,7 +87,8 @@ WSGI_APPLICATION = "orus.wsgi.application"
 #     }
 # }
 
-DATABASE_URL= os.getenv('DATABASE_URL')
+# DATABASE_URL= os.getenv('DATABASE_URL')
+DATABASE_URL='postgresql://neondb_owner:npg_3Ecdksr8zeBN@ep-tiny-wave-aci6kie6-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
 tmpPostgres = urlparse(DATABASE_URL)
 
 DATABASES = {

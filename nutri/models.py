@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Alimento(models.Model):
     # 1. Informações Básicas
@@ -58,3 +60,32 @@ class Alimento(models.Model):
 
     def __str__(self):
         return self.nome
+    
+class Rotina(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rotinas')
+    nome = models.CharField(max_length=100, help_text="Ex: Dieta para Hipertrofia")
+    # Novos campos adicionados:
+    data = models.DateField(default=timezone.now, help_text="Data desta rotina")
+    descricao = models.TextField(blank=True, null=True, help_text="Anotações extras")
+    criado_em = models.DateTimeField(auto_now_add=True)
+    excluido = models.BooleanField(default=False, verbose_name="Excluído")
+
+    def __str__(self):
+        return f"{self.nome} - {self.data.strftime('%d/%m/%Y')}"
+
+class ItemRotina(models.Model):
+    TIPO_REFEICAO = (
+        ('cafe', 'Café da Manhã'),
+        ('almoco', 'Almoço'),
+        ('lanche', 'Lanche da Tarde'),
+        ('jantar', 'Jantar'),
+    )
+    
+    rotina = models.ForeignKey(Rotina, on_delete=models.CASCADE, related_name='itens')
+    alimento = models.ForeignKey(Alimento, on_delete=models.CASCADE)
+    refeicao = models.CharField(max_length=20, choices=TIPO_REFEICAO)
+    quantidade_gramas = models.DecimalField(max_digits=6, decimal_places=2, help_text="Quantidade em gramas")
+    excluido = models.BooleanField(default=False, verbose_name="Excluído")
+
+    def __str__(self):
+        return f"{self.alimento.nome} ({self.quantidade_gramas}g) - {self.get_refeicao_display()}"

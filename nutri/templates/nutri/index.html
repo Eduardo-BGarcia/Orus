@@ -18,7 +18,7 @@
           Nutrição como <span style="font-style: italic; color: var(--theme-primary);">Arte.</span>
         </h1>
         
-        <p class="mb-4 text-muted" style="font-size: 1.1rem; max-width: 480px;">
+        <p class="mb-4 text-dark" style="font-size: 1.1rem; max-width: 480px;">
           Acompanhe sua jornada nutricional com o rigor de um especialista e a leveza de um entusiasta.
         </p>
 
@@ -29,21 +29,21 @@
 {% endblock hero %}
 
 {% block conteudo %}
-<section class="py-5 bg-surface-alt">
+<section class="py-5 bg-surface">
   <div class="container">
     
     <div class="text-center mb-5 mt-4">
       <h2 class="fw-bold display-6" style="color: var(--theme-primary); font-family: var(--font-display);">
         Alimentos em Destaque
       </h2>
-      <p class="text-muted">Os alimentos mais consultados pela nossa comunidade.</p>
+      <p class="text-dark">Os alimentos mais consultados pela nossa comunidade.</p>
     </div>
     
     <div class="row g-4 justify-content-center">
       {% for item in top_alimentos %}
       
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center d-flex flex-column position-relative" style="background-color: var(--surface);">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center d-flex flex-column position-relative" style="background-color: var(--surface-alt);">
           
           <div class="position-absolute top-0 end-0 mt-2 me-2 z-2">
             <span class="badge rounded-pill shadow-sm" style="background-color: var(--theme-tertiary);">

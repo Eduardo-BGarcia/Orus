@@ -1,3 +1,56 @@
 {% extends "nutri/modelo.html" %}
 
 {% load static %}
+
+{% block hero %}
+{% endblock hero %}
+
+{% block conteudo %}
+
+<div class="dashboard-container mt-5">
+        
+        <div class="header-conta bg-surface-alt">
+            <div>
+                <h2>Olá, {{ user.username }}!</h2>
+                <p style="margin: 5px 0 0 0; color: #666;">Bem-vindo(a) ao seu painel nutricional.</p>
+            </div>
+            <a href="{% url 'logout' %}" class="btn-sair">Sair da Conta</a>
+        </div>
+
+        <div class="grid-conta">
+            <div class="card bg-surface-alt">
+                <h3>Meus Dados</h3>
+                <div class="dados-lista">
+                    <p><strong>Usuário</strong> {{ user.username }}</p>
+                    <p><strong>E-mail</strong> {{ user.email|default:"Não informado" }}</p>
+                    <p><strong>Membro desde</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+                </div>
+            </div>
+
+            <div class="card bg-surface-alt">
+                <div class="header-rotinas">
+                    <h3>Meus Diários / Rotinas</h3>
+                    <a href="{% url 'criar_rotina' %}" class="btn-outline-secundary">+ Nova Rotina</a>
+                </div>
+
+                {% if user.rotinas.all %}
+                    {% for rotina in user.rotinas.all|dictsortreversed:"criado_em" %}
+                        <div class="rotina-item">
+                            <div class="rotina-info">
+                                <h4>{{ rotina.nome }}</h4>
+                                <p>🗓️ Data: {{ rotina.data|date:"d/m/Y" }}</p>
+                            </div>
+                            <a href="{% url 'rotina_detalhe' rotina.id %}" class="btn-primario" style="background-color: #eef2f0; color: var(--verde-escuro);">Ver Diário</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="text-align: center; padding: 40px 0; color: var(--texto-secundario);">
+                        <p>Você ainda não possui nenhum diário alimentar cadastrado.</p>
+                        <p>Clique no botão acima para começar!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+{% endblock conteudo%}

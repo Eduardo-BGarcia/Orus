@@ -9,21 +9,21 @@
 {% endblock hero %}
 
 {% block conteudo %}
-<section class="py-5 bg-surface-alt">
+<section class="py-5 bg-surface">
   <div class="container">
 
     <div class="text-center mb-5 mt-4">
       <h2 class="fw-bold display-6" style="color: var(--theme-primary); font-family: var(--font-display);">
         Receitas em Destaque
       </h2>
-      <p class="text-muted">As receitas mais consultadas pela nossa comunidade.</p>
+      <p class="text-dark">As receitas mais consultadas pela nossa comunidade.</p>
     </div>
 
     <div class="row g-4 justify-content-center">
       {% for item in top_4_receitas %}
       
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center d-flex flex-column position-relative" style="background-color: var(--surface);">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center d-flex flex-column position-relative" style="background-color: var(--surface-alt);">
           
           <div class="position-absolute top-0 end-0 mt-2 me-2 z-2">
             <span class="badge rounded-pill shadow-sm" style="background-color: var(--theme-tertiary);">
@@ -45,15 +45,15 @@
 
           <div class="d-flex justify-content-around align-items-center mb-3">
             <div>
-              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Kcal</small>
+              <small class="text-dark d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Kcal</small>
               <strong class="fs-5" style="color: var(--theme-primary);">{{ item.energia_kcal|default:"0" }}</strong>
             </div>
             <div>
-              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Carbo</small>
+              <small class="text-dark d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Carbo</small>
               <strong class="fs-5 text-warning">{{ item.carboidrato_total|default:"0" }}</strong>
             </div>
             <div>
-              <small class="text-muted d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Prot</small>
+              <small class="text-dark d-block fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Prot</small>
               <strong class="fs-5 text-success">{{ item.proteina|default:"0" }}</strong>
             </div>
           </div>
@@ -64,7 +64,7 @@
       
       {% empty %}
       <div class="col-12 text-center py-2">
-        <p class="text-muted">Nenhuma receita foi visualizada ainda. Seja o primeiro a buscar!</p>
+        <p class="text-dark">Nenhuma receita foi visualizada ainda. Seja o primeiro a buscar!</p>
       </div>
       {% endfor %}
     </div>
@@ -75,14 +75,14 @@
   <div class="container">
     <div class="text-center mb-5 mt-4">
       <h1 class="fw-bold display-5" style="color: var(--theme-primary); font-family: var(--font-display);">Tabela de Receitas</h1>
-      <p class="text-muted">Busque e filtre informações nutricionais de mais de 5.000 itens.</p>
+      <p class="text-dark">Busque e filtre informações nutricionais de mais de 5.000 itens.</p>
     </div>
 
     <form method="GET" action="{% url 'receita' %}" class="row g-3 justify-content-center mb-5">
       
       <div class="col-md-8 col-lg-6">
         <div class="input-group input-group-lg shadow-sm border rounded-pill overflow-hidden">
-          <span class="input-group-text bg-white border-0"><i class="bi bi-search text-muted"></i></span>
+          <span class="input-group-text bg-white border-0"><i class="bi bi-search text-dark"></i></span>
           <input type="text" name="q" value="{{ query }}" class="form-control border-0 shadow-none" placeholder="Ex: Vitamina de abacate...">
           <button class="btn px-4 fw-bold" type="submit" style="background-color: var(--theme-primary); color: white;">Buscar</button>
 
@@ -117,36 +117,36 @@
                 
                 {% if ordem_atual %}
                 <div>
-                  <small class="text-muted d-block fw-bold" style="font-size: 0.70rem; text-transform: uppercase;">{{ item.label_destaque }}</small>
+                  <small class="text-dark d-block fw-bold" style="font-size: 0.70rem; text-transform: uppercase;">{{ item.label_destaque }}</small>
                   <strong class="fs-4" style="color: var(--theme-primary);">{{ item.valor_destaque|default:"0" }}</strong>
                 </div>
                 {% else %}
                 <div>
-                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Kcal</small>
+                  <small class="text-dark d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Kcal</small>
                   <strong class="fs-4" style="color: var(--theme-primary);">{{ item.energia_kcal|default:"0" }}</strong>
                 </div>
                 {% endif %}
 
                 {% if ordem_atual %}
                 <div>
-                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Kcal</small>
+                  <small class="text-dark d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Kcal</small>
                   <strong class="fs-4 text-warning">{{ item.energia_kcal|default:"0" }}</strong>
                 </div>
                 {% else %}
                 <div>
-                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Carbo</small>
+                  <small class="text-dark d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Carbo</small>
                   <strong class="fs-4 text-warning">{{ item.carboidrato_total|default:"0" }}</strong>
                 </div>
                 {% endif %}
 
                 {% if ordem_atual %}
                 <div>
-                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Carbo</small>
+                  <small class="text-dark d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Carbo</small>
                   <strong class="fs-4 text-success">{{ item.carboidrato_total|default:"0" }}</strong>
                 </div>
                 {% else %}
                 <div>
-                  <small class="text-muted d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Prot</small>
+                  <small class="text-dark d-block fw-bold" style="font-size: 0.75rem; text-transform: uppercase;">Prot</small>
                   <strong class="fs-4 text-success">{{ item.proteina|default:"0" }}</strong>
                 </div>
                 {% endif %}
@@ -160,7 +160,7 @@
         {% empty %}
         {% if houve_busca %}
         <div class="col-12 text-center py-2">
-          <p class="text-muted">Item buscado não foi encontrado!</p>
+          <p class="text-dark">Item buscado não foi encontrado!</p>
         </div>
         {% endif %}
         {% endfor %}
@@ -181,7 +181,7 @@
           <input type="hidden" name="q" value="{{ query }}">
           
           <div class="mb-4">
-            <label class="form-label fw-bold text-muted">Ordenar lista por:</label>
+            <label class="form-label fw-bold text-dark">Ordenar lista por:</label>
             <select class="form-select form-select-lg rounded-3" name="ordem">
               <option value="" {% if not ordem_atual %}selected{% endif %}>Ordem Alfabética (Padrão)</option>
 

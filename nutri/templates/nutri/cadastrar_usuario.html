@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Nutrição Sistêmica</title>
+    <style>
+        /* COPIE O MESMO CSS DA TELA DE LOGIN AQUI */
+        :root {
+            --verde-escuro: #295F48; 
+            --verde-hover: #1e4735;
+            --fundo-pagina: #F5F7F6;
+            --fundo-card: #FFFFFF;
+            --texto-principal: #333333;
+            --texto-secundario: #666666;
+            --borda: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--fundo-pagina);
+            color: var(--texto-principal);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* min-height para acomodar forms maiores */
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        .auth-container {
+            background-color: var(--fundo-card);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 450px; /* Um pouco mais largo para o cadastro */
+            text-align: center;
+        }
+
+        .auth-title {
+            color: var(--verde-escuro);
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .auth-subtitle {
+            color: var(--texto-secundario);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .auth-form p {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .auth-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .auth-form input[type="text"],
+        .auth-form input[type="password"],
+        .auth-form input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            border-color: var(--verde-escuro);
+            box-shadow: 0 0 0 2px rgba(41, 95, 72, 0.2);
+        }
+
+        /* O Django gera textos de ajuda (helptext) no cadastro, vamos estilizá-los */
+        .auth-form span.helptext {
+            display: block;
+            font-size: 12px;
+            color: var(--texto-secundario);
+            margin-top: 5px;
+        }
+
+        .auth-form ul {
+            padding-left: 20px;
+            font-size: 12px;
+            color: var(--texto-secundario);
+            text-align: left;
+        }
+
+        .auth-form ul.errorlist {
+            color: #d93025;
+            list-style-type: none;
+            padding: 0;
+            font-size: 13px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-submit {
+            background-color: var(--verde-escuro);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--verde-hover);
+        }
+
+        .auth-links {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .auth-links a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <h2 class="auth-title">Crie sua Conta</h2>
+        <p class="auth-subtitle">Junte-se à nossa comunidade nutricional.</p>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-submit">Criar Conta</button>
+        </form>
+
+        <div class="auth-links">
+            <p>Já possui uma conta? <a href="{% url 'login' %}">Faça Login</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
