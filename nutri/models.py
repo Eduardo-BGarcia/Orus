@@ -64,7 +64,6 @@ class Alimento(models.Model):
 class Rotina(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rotinas')
     nome = models.CharField(max_length=100, help_text="Ex: Dieta para Hipertrofia")
-    # Novos campos adicionados:
     data = models.DateField(default=timezone.now, help_text="Data desta rotina")
     descricao = models.TextField(blank=True, null=True, help_text="Anotações extras")
     criado_em = models.DateTimeField(auto_now_add=True)

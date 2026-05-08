@@ -1,3 +1,58 @@
 {% extends "nutri/modelo.html" %}
 
 {% load static %}
+
+{% block hero %}
+<section class="hero-botanical position-relative d-flex align-items-center"
+         style="background-image: url('{% static 'imgs/index_hero.jpg' %}');">
+  
+  <div class="position-absolute top-0 start-0 w-100 h-100"
+       style="background: linear-gradient(to right, rgba(255,255,255,0.95) 20%, rgba(255,255,255,0.55) 60%, rgba(255,255,255,0.1) 100%); z-index: -1;">
+  </div>
+  
+  <div class="container position-relative z-1">
+    <div class="row">
+      <div class="col-lg-8 col-xl-7 text-start ps-lg-4 pe-lg-5">
+        
+        <h1 class="display-3 fw-bold mb-3" style="color: var(--theme-neutral); font-family: var(--font-display);">
+          Nutrição como <span style="font-style: italic; color: var(--theme-primary);">Arte.</span>
+        </h1>
+        
+        <p class="mb-4 text-dark" style="font-size: 1.1rem; max-width: 480px;">
+          Acompanhe sua jornada nutricional com o rigor de um especialista e a leveza de um entusiasta.
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock hero %}
+
+{% block conteudo %}
+<section class="py-5 bg-surface">
+  <div class="container">
+    
+    <div class="text-center mb-5 mt-4">
+      <h2 class="fw-bold display-6" style="color: var(--theme-primary); font-family: var(--font-display);">
+        Sobre
+      </h2>
+      <p class="text-dark">Conheça mais sobre nós!.</p>
+    </div>
+    
+    <div class="row g-4 justify-content-center">
+      <p>
+        O sistema tem como objetivo permitir que usuários possam visualizar a tabela nutricional completa dos alimentos e receitas. Conseguindo visualizar todos os tipos de macronutrientes, vitaminas, minerais, acidos graxos, e outros. Também permitir o cadastro de rotinas alimentares, que tem como objetivo mostrar de forma diária todos os nutrientes estimados dos alimentos/receitas que o usuário cadastrou para aquele dia.
+      </p>
+      <div class="col-lg-6 d-none d-lg-block text-end">
+          <img src="{% static 'imgs/caso_de_uso.jpg' %}" alt="Caso de Uso" class="img-fluid rounded-4 shadow-lg" style="object-fit: cover; height: 500px; width: 100%;">
+      </div>
+
+      <div class="col-lg-6 d-none d-lg-block text-end">
+          <img src="{% static 'imgs/diagrama_de_classe.jpg' %}" alt="Diagrama de Classe" class="img-fluid rounded-4 shadow-lg" style="object-fit: cover; height: 500px; width: 100%;">
+      </div>
+
+    </div>
+
+  </div>
+</section>
+{% endblock conteudo %}
