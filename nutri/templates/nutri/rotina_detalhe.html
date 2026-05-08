@@ -1,4 +1,5 @@
 {% extends "nutri/modelo.html" %}
+
 {% load static %}
 
 {% block hero %}
@@ -8,228 +9,37 @@
 <section class="py-5 mt-5">
   <div class="container">
     
-    <a href="{% url 'conta' %}" class="btn btn-sm btn-outline-secondary rounded-pill mb-4">
-      <i class="bi bi-arrow-left me-1"></i> Voltar para Minha Conta
+    <a href="{% url 'receita' %}" class="btn btn-sm btn-outline-secondary rounded-pill mb-4">
+      <i class="bi bi-arrow-left me-1"></i> Voltar para a lista
     </a>
+
+    {% if user.is_authenticated %}
+    <button class="btn btn-sm btn-primary rounded-pill mb-4 float-end" data-bs-toggle="modal" data-bs-target="#modalAdicionarDiario-{{ item.id }}">
+      <i class="bi bi-plus-circle me-1"></i> Adicionar a Rotina
+    </button>
+    {% endif %}
 
     <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4" style="background-color: var(--surface-alt);">
       <div class="row align-items-center">
         <div class="col-lg-10">
-          <span class="badge rounded-pill mb-3" style="background-color: var(--theme-secondary); color: white;">
-            <i class="bi bi-calendar-event me-1"></i> {{ rotina.data|date:"d/m/Y" }}
-          </span>
-          <h1 class="fw-bold display-5 mb-2" style="color: var(--theme-neutral); font-family: var(--font-display);">
-            {{ rotina.nome }}
+          <span class="badge rounded-pill mb-3" style="background-color: var(--theme-secondary); color: white;">Valores para 100g</span>
+          <h1 class="fw-bold display-5 mb-0" style="color: var(--theme-neutral); font-family: var(--font-display);">
+            {{ item.nome|safe }}
           </h1>
-          {% if rotina.descricao %}
-            <p class="text-muted mb-0"><i class="bi bi-chat-quote-fill me-2" style="color: var(--theme-primary);"></i><em>{{ rotina.descricao }}</em></p>
-          {% endif %}
         </div>
         <div class="col-lg-2 text-lg-end mt-4 mt-lg-0 mw-50">
-          <p class="text-muted fw-bold text-uppercase mb-0" style="letter-spacing: 1px; font-size: 12px;">Consumo Total</p>
-          <h2 class="display-4 fw-bold mb-0" style="color: var(--theme-primary);">{{ totais.energia_kcal|default:"0"|floatformat:0 }}</h2>
+          <h2 class="display-4 fw-bold mb-0" style="color: var(--theme-primary);">{{ item.energia_kcal|default:"0" }}</h2>
           <span class="text-muted fw-bold text-uppercase" style="letter-spacing: 2px;">Kcal</span>
         </div>
       </div>
     </div>
 
-    <h3 class="fw-bold mb-4 mt-5" style="color: var(--theme-neutral); font-family: var(--font-display);">Nutrientes Acumulados</h3>
-    <div class="row g-4 mb-5">
-      
-      <div class="col-md-6 col-xl-4">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
-          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-pie-chart-fill me-2"></i>Macronutrientes</h4>
-          <ul class="list-group list-group-flush" style="background: transparent;">
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Carboidrato Total</span><span class="fw-bold">{{ totais.carboidrato_total|default:"0"|floatformat:1 }} g</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Carbo Disponível</span><span class="fw-bold">{{ totais.carboidrato_disponivel|default:"0"|floatformat:1 }} g</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Proteínas</span><span class="fw-bold text-success">{{ totais.proteina|default:"0"|floatformat:1 }} g</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Lipídios (Gorduras)</span><span class="fw-bold">{{ totais.lipidios|default:"0"|floatformat:1 }} g</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-0" style="background: transparent;"><span class="text-muted fw-bold">Fibra Alimentar</span><span class="fw-bold">{{ totais.fibra_alimentar|default:"0"|floatformat:1 }} g</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-4">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
-          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-droplet-fill me-2"></i>Perfil Lipídico</h4>
-          <ul class="list-group list-group-flush" style="background: transparent;">
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Colesterol</span><span class="fw-bold text-danger">{{ totais.colesterol|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Graxos Saturados</span><span class="fw-bold">{{ totais.acidos_graxos_saturados|default:"0"|floatformat:1 }} g</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Monoinsaturados</span><span class="fw-bold">{{ totais.acidos_graxos_monoinsaturados|default:"0"|floatformat:1 }} g</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Polinsaturados</span><span class="fw-bold">{{ totais.acidos_graxos_polinsaturados|default:"0"|floatformat:1 }} g</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-0" style="background: transparent;"><span class="text-muted fw-bold">Graxos Trans</span><span class="fw-bold text-danger">{{ totais.acidos_graxos_trans|default:"0"|floatformat:1 }} g</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-4">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
-          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-heptagon-fill me-2"></i>Minerais</h4>
-          <ul class="list-group list-group-flush" style="background: transparent;">
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Cálcio</span><span class="fw-bold">{{ totais.calcio|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Ferro</span><span class="fw-bold">{{ totais.ferro|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Sódio</span><span class="fw-bold">{{ totais.sodio|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Magnésio</span><span class="fw-bold">{{ totais.magnesio|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Fósforo</span><span class="fw-bold">{{ totais.fosforo|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Potássio</span><span class="fw-bold">{{ totais.potassio|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Zinco</span><span class="fw-bold">{{ totais.zinco|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Cobre</span><span class="fw-bold">{{ totais.cobre|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-0" style="background: transparent;"><span class="text-muted fw-bold">Selênio</span><span class="fw-bold">{{ totais.selenio|default:"0"|floatformat:1 }} mcg</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-4">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
-          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-stars me-2"></i>Vitaminas</h4>
-          <ul class="list-group list-group-flush" style="background: transparent;">
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vit. C</span><span class="fw-bold">{{ totais.vitamina_c|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vit. A (RE)</span><span class="fw-bold">{{ totais.vitamina_a_re|default:"0"|floatformat:1 }} mcg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vit. D</span><span class="fw-bold">{{ totais.vitamina_d|default:"0"|floatformat:1 }} mcg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vit. E</span><span class="fw-bold">{{ totais.vitamina_e_alfa_toceferol|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Tiamina (B1)</span><span class="fw-bold">{{ totais.vitamina_b1_tiamina|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Riboflavina (B2)</span><span class="fw-bold">{{ totais.vitamina_b2_riboflavina|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Niacina (B3)</span><span class="fw-bold">{{ totais.vitamina_b3_niacina|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Vitamina B6</span><span class="fw-bold">{{ totais.vitamina_b6|default:"0"|floatformat:1 }} mg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Folato (B9)</span><span class="fw-bold">{{ totais.vitamina_b9|default:"0"|floatformat:1 }} mcg</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center border-0" style="background: transparent;"><span class="text-muted fw-bold">Vitamina B12</span><span class="fw-bold">{{ totais.vitamina_b12|default:"0"|floatformat:1 }} mcg</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-md-12 col-xl-8">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4" style="background-color: var(--surface-alt);">
-          <h4 class="fw-bold mb-4" style="color: var(--theme-primary);"><i class="bi bi-info-circle-fill me-2"></i>Outros Componentes</h4>
-          <div class="row">
-            <div class="col-md-6">
-              <ul class="list-group list-group-flush" style="background: transparent;">
-                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Energia (kJ)</span><span class="fw-bold">{{ totais.energia_kj|default:"0"|floatformat:1 }} kJ</span></li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Umidade</span><span class="fw-bold">{{ totais.umidade|default:"0"|floatformat:1 }} g</span></li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Cinzas</span><span class="fw-bold">{{ totais.cinzas|default:"0"|floatformat:1 }} g</span></li>
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <ul class="list-group list-group-flush" style="background: transparent;">
-                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Álcool</span><span class="fw-bold">{{ totais.alcool|default:"0"|floatformat:1 }} g</span></li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Sal de Adição</span><span class="fw-bold">{{ totais.sal_adicao|default:"0"|floatformat:1 }} g</span></li>
-                <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25" style="background: transparent;"><span class="text-muted fw-bold">Açúcar de Adição</span><span class="fw-bold">{{ totais.acucar_adicao|default:"0"|floatformat:1 }} g</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <h3 class="fw-bold mb-4" style="color: var(--theme-neutral); font-family: var(--font-display);">Cardápio Detalhado</h3>
-    
     <div class="row g-4">
       
-      {% if refeicoes.cafe %}
-      <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #fff;">
-          <h5 class="fw-bold mb-3" style="color: var(--theme-primary); border-bottom: 2px solid var(--theme-primary); padding-bottom: 10px;">
-            <i class="bi bi-sunrise-fill me-2"></i> Café da Manhã
-          </h5>
-          <ul class="list-group list-group-flush">
-            {% for item in refeicoes.cafe %}
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-10 py-3">
-              <div>
-                <span class="fw-bold text-dark">{{ item.alimento.nome }}</span>
-                <span class="text-muted ms-2 small">({{ item.quantidade_gramas|floatformat:0 }}g)</span>
-              </div>
-              <form method="POST" action="{% url 'remover_item_rotina' item.id %}" style="margin: 0;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Remover este alimento?');" title="Remover item">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
       </div>
-      {% endif %}
 
-      {% if refeicoes.almoco %}
-      <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #fff;">
-          <h5 class="fw-bold mb-3" style="color: var(--theme-primary); border-bottom: 2px solid var(--theme-primary); padding-bottom: 10px;">
-            <i class="bi bi-sun-fill me-2"></i> Almoço
-          </h5>
-          <ul class="list-group list-group-flush">
-            {% for item in refeicoes.almoco %}
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-10 py-3">
-              <div>
-                <span class="fw-bold text-dark">{{ item.alimento.nome }}</span>
-                <span class="text-muted ms-2 small">({{ item.quantidade_gramas|floatformat:0 }}g)</span>
-              </div>
-              <form method="POST" action="{% url 'remover_item_rotina' item.id %}" style="margin: 0;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Remover este alimento?');" title="Remover item">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-      {% endif %}
+    {% include 'components/_modal_adicionar_diario.html' %}
 
-      {% if refeicoes.lanche %}
-      <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #fff;">
-          <h5 class="fw-bold mb-3" style="color: var(--theme-primary); border-bottom: 2px solid var(--theme-primary); padding-bottom: 10px;">
-            <i class="bi bi-cup-hot-fill me-2"></i> Lanche da Tarde
-          </h5>
-          <ul class="list-group list-group-flush">
-            {% for item in refeicoes.lanche %}
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-10 py-3">
-              <div>
-                <span class="fw-bold text-dark">{{ item.alimento.nome }}</span>
-                <span class="text-muted ms-2 small">({{ item.quantidade_gramas|floatformat:0 }}g)</span>
-              </div>
-              <form method="POST" action="{% url 'remover_item_rotina' item.id %}" style="margin: 0;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Remover este alimento?');" title="Remover item">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-      {% endif %}
-
-      {% if refeicoes.jantar %}
-      <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #fff;">
-          <h5 class="fw-bold mb-3" style="color: var(--theme-primary); border-bottom: 2px solid var(--theme-primary); padding-bottom: 10px;">
-            <i class="bi bi-moon-stars-fill me-2"></i> Jantar
-          </h5>
-          <ul class="list-group list-group-flush">
-            {% for item in refeicoes.jantar %}
-            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-10 py-3">
-              <div>
-                <span class="fw-bold text-dark">{{ item.alimento.nome }}</span>
-                <span class="text-muted ms-2 small">({{ item.quantidade_gramas|floatformat:0 }}g)</span>
-              </div>
-              <form method="POST" action="{% url 'remover_item_rotina' item.id %}" style="margin: 0;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Remover este alimento?');" title="Remover item">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-      {% endif %}
-
-      </div>
   </div>
 </section>
 {% endblock conteudo %}
